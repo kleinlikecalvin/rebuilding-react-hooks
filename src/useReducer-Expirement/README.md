@@ -27,3 +27,25 @@ const [state, setState] = useState(initialState)
 ### How to accomplish
 
 setState is the main part of useState that would need to be considered when leveraging useReducer. With setState we will simply pass in the new state via action.payload.
+
+## Building useEffect off of useReducer
+
+### API Surface of useEffect
+
+<code>
+useEffect(setup, dependencies?)
+</code>
+
+### How to accomplish
+
+Our "useEffect" logic within the reducer will need to accept a function as the "setup" parameter. The setup function could return a clean up function which, if present, would need to be called as well.
+
+Our reducer logic will also need to determine if a dependency array exists and if there are any dependencies listed within the array (props, state, and all the variables/functions declared directly inside your component body).
+
+If there are dependencies listed in the dependency array we will need to utilize <code>Object.is</code> to determine if there were any changes in the dependencies from the previous run of useEffect. If there was any change then we would re-run the useEffect.
+
+If an empty array (zero dependencies) is passed as a dependency then the effect will only run after the initial render.
+
+If there is no dependency array at all, then the effect will run after every re/render.
+
+useEffect returns <code>undefined</code>
